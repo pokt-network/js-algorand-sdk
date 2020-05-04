@@ -1,6 +1,6 @@
-const client = require('./client');
+import {PocketProvider, HTTPProvider, ProviderType} from "../provider";
 
-function Algod(token = '', baseServer = "http://r2.algorand.network", port = 4180, headers = {}) {
+function Algod(token = '', baseServer = "http://r2.algorand.network", port = 4180, headers = {}, providerType = new ProviderType()) {
     // workaround to allow backwards compatibility for multiple headers
     let tokenHeader = token;
     if (typeof (tokenHeader) == 'string') {
@@ -8,7 +8,24 @@ function Algod(token = '', baseServer = "http://r2.algorand.network", port = 418
     }
 
     // Get client
-    let c = new client.HTTPClient(tokenHeader, baseServer, port, headers);
+    let c
+
+    switch (providerType.type) {
+        case Type.POCKET:
+            c = new PocketProvider(
+                tokenHeader,
+                baseServer,
+                port,
+                headers,
+                providerType.data.pocketPrivateKey,
+                providerType.data.pocketPublicKey,
+                providerType.data.pocketAddress,
+                providerType.data.pocketPassphrase
+            )
+            break
+        default:
+            c = new HTTPProvider(tokenHeader, baseServer, port, headers);
+    }
 
     /**
      * Takes an object and convert its note field to Buffer, if exist.
