@@ -4,22 +4,12 @@ import {RpcError} from "@pokt-network/pocket-js/lib/src/rpc";
 
 export class PocketProvider extends Provider {
 
-    constructor(token, baseServer, port, headers = {}, pocketPrivateKey, pocketPublicKey, pocketAddress, pocketPassphrase) {
+    constructor(token, baseServer, port, headers = {}, pocketAAT) {
         super(token, baseServer, port, headers);
 
         this.pocket = new Pocket([new URL(this.address)])
+        this.pocketAAT = pocketAAT
 
-        this.pocket.keybase.importAccount(Buffer.from(pocketPrivateKey, 'hex'), pocketPassphrase).then(() => {
-            this.pocket.keybase.unlockAccount(pocketAddress, pocketPassphrase, 0).then(() => {
-                (async () => {
-                    try {
-                        this.pocketAAT = await PocketAAT.from('0.0.1', pocketPublicKey, pocketPublicKey, pocketPrivateKey)
-                    } catch (e) {
-                        console.log(e)
-                    }
-                })()
-            })
-        })
     }
 
     async get(path, query, requestHeaders = {}) {

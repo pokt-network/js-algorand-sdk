@@ -17,10 +17,7 @@ function Algod(token = '', baseServer = "http://r2.algorand.network", port = 418
                 baseServer,
                 port,
                 headers,
-                providerType.data.pocketPrivateKey,
-                providerType.data.pocketPublicKey,
-                providerType.data.pocketAddress,
-                providerType.data.pocketPassphrase
+                providerType.data.pocketAAT
             )
             break
         default:
