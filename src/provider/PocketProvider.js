@@ -9,7 +9,6 @@ export class PocketProvider extends Provider {
 
         this.pocket = new Pocket([new URL(this.address)])
         this.pocketAAT = pocketAAT
-
     }
 
     async get(path, query, requestHeaders = {}) {
