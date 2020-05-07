@@ -1,4 +1,6 @@
-import {PocketProvider, HTTPProvider, ProviderType} from "../provider";
+let PocketProvider = require("../provider/PocketProvider");
+let HTTPProvider = require("../provider/HTTPProvider");
+let ProviderType = require("../provider/ProviderType");
 
 function Algod(token = '', baseServer = "http://r2.algorand.network", port = 4180, headers = {}, providerType = new ProviderType()) {
     // workaround to allow backwards compatibility for multiple headers
