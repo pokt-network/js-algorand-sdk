@@ -37,7 +37,7 @@ function PocketProvider(token = '', baseServer = "http://r2.algorand.network", p
         let headers = Object.assign(this.defaultHeaders, requestHeaders)
         let relay = await this.pocket.sendRelay(
             JSON.stringify(query),
-            "algo",
+            "ALGO",
             this.pocketAAT,
             this.pocket.configuration,
             headers,
