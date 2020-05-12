@@ -10,15 +10,15 @@ function PocketProvider(token = '', baseServer = "http://r2.algorand.network", p
 
 
     this.get = async function (path, query, requestHeaders={}) {
-        return await this.sendPocketRelay(requestHeaders, query, path, "get");
+        return await this.sendPocketRelay(requestHeaders, query, path, "GET");
     };
 
     this.post = async function (path, data, requestHeaders={}) {
-        return await this.sendPocketRelay(requestHeaders, query, path, "post");
+        return await this.sendPocketRelay(requestHeaders, query, path, "POST");
     };
 
     this.delete = async function (path, data, requestHeaders={}) {
-        return await this.sendPocketRelay(requestHeaders, query, path, "delete");
+        return await this.sendPocketRelay(requestHeaders, query, path, "DELETE");
     };
 
 
@@ -39,7 +39,9 @@ function PocketProvider(token = '', baseServer = "http://r2.algorand.network", p
             throw relay
         }
 
-        return relay.payload
+        return {
+            body: JSON.parse(relay.payload)
+        }
     }
 }
 
