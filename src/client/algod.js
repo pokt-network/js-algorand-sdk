@@ -3,15 +3,11 @@ let HTTPProvider = require("../provider/HTTPProvider").HTTPProvider;
 let ProviderType = require("../provider/ProviderType").ProviderType;
 let Type = require("../provider/Type")
 
-function Algod(token = '', baseServer = "http://r2.algorand.network", port = 4180, headers = {}, providerType = undefined) {
+function Algod(token = '', baseServer = "http://r2.algorand.network", port = 4180, headers = {}, providerType = new ProviderType(Type.ALGO, {})) {
     // workaround to allow backwards compatibility for multiple headers
     let tokenHeader = token;
     if (typeof (tokenHeader) == 'string') {
         tokenHeader = {"X-Algo-API-Token": tokenHeader};
-    }
-
-    if(providerType === undefined) {
-        providerType = new ProviderType(Type.ALGO, {})
     }
 
     // Get client
@@ -24,7 +20,7 @@ function Algod(token = '', baseServer = "http://r2.algorand.network", port = 418
                 baseServer,
                 port,
                 headers,
-                providerType.data.pocketAAT
+                providerType.data
             )
             break
         default:

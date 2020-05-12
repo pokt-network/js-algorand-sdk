@@ -1,14 +1,12 @@
-const provider = require('./Provider');
+const Provider = require('./Provider').Provider;
+const typeGuard = require("@pokt-network/pocket-js/lib/src/utils/type-guard").typeGuard
+const RpcError = require("@pokt-network/pocket-js/lib/src/rpc").RpcError
 
-let Provider = provider.Provider;
-let Pocket = require("@pokt-network/pocket-js")
-let typeGuard = require("@pokt-network/pocket-js/lib/src/utils/type-guard")
-let RpcError = require("@pokt-network/pocket-js/lib/src/rpc")
-
-
-function PocketProvider(token = '', baseServer = "http://r2.algorand.network", port = 4180, headers = {}, pocketAAT) {
+function PocketProvider(token = '', baseServer = "http://r2.algorand.network", port = 4180, headers = {}, data = {}) {
     Provider.apply(this, arguments)
-    this.pocket = new Pocket([new URL(this.address)])
+    this.pocket = data.pocket
+    this.pocketAAT = data.pocketAAT
+    this.blockchain = data.blockchain
 
 
     this.get = async function (path, query, requestHeaders={}) {
@@ -34,10 +32,11 @@ function PocketProvider(token = '', baseServer = "http://r2.algorand.network", p
 
 
     this.sendPocketRelay = async function(requestHeaders, query, path, method) {
-        let headers = Object.assign(this.defaultHeaders, requestHeaders)
+        let headers = Object.assign(this.defaultHeaders, requestHeaders, this.token)
+
         let relay = await this.pocket.sendRelay(
             JSON.stringify(query),
-            "ALGO",
+            this.blockchain,
             this.pocketAAT,
             this.pocket.configuration,
             headers,
