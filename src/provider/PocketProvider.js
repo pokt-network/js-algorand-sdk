@@ -18,16 +18,7 @@ function PocketProvider(token = '', baseServer = "http://r2.algorand.network", p
     };
 
     this.delete = async function (path, data, requestHeaders={}) {
-        try {
-            return await request
-                .delete(this.address + path)
-                .set(this.token)
-                .set(this.defaultHeaders)
-                .set(requestHeaders)
-                .send(data);
-        } catch (e) {
-            throw e.response;
-        }
+        return await this.sendPocketRelay(requestHeaders, query, path, "delete");
     };
 
 
